@@ -26,6 +26,7 @@ x-multi-service-backend: &multi-service-backend
     - RABBITMQ_DEFAULT_PASS
 
 services:
+
   traefik-gateway:
     image: traefik:v1.7.16-alpine
     volumes:
@@ -35,6 +36,7 @@ services:
     depends_on:
       - passportjs-auth
     ports: ['80:80']
+    container_name: traefik-gateway
 
   frontend-web:
     <<: *shared-constants-volume
@@ -56,6 +58,7 @@ services:
       - WEBSTACK_PROTOCOL
       - WEBSOCKET_WEBSTACK_HOST
       - NODE_ENV=production
+    container_name: frontend-web
 
   backend-api:
     <<: *multi-service-backend
@@ -67,12 +70,14 @@ services:
       - 'traefik.backendApi.frontend.auth.forward.address=${INTERNAL_AUTH_CHECK}'
       - 'traefik.backendApi.frontend.auth.forward.authResponseHeaders=${INTERNAL_AUTH_HEADERS}'
     command: ['bundle', 'exec', 'puma', '-p', '3000', 'config.ru']
+    container_name: backend-api
 
   background-worker:
     <<: *multi-service-backend
     labels:
       - 'traefik.enable=false'
     command: ['/bin/sh', '-c', './bin/start_background_workers.rb']
+    container_name: background-worker
 
   passportjs-auth:
     <<: *shared-constants-volume
@@ -96,7 +101,8 @@ services:
       - 'traefik.enable=true'
       - 'traefik.frontend.priority=90'
       - 'traefik.frontend.rule=PathPrefix:/auth/'
-    command: ['yarn', 'start']
+    command: ["yarn", "start"]
+    container_name: passportjs-auth
 
   websocket-push:
     <<: *shared-constants-volume
@@ -105,7 +111,7 @@ services:
     ports: ['8001:8001']
     depends_on:
       - redis-main
-    command: ['yarn', 'start']
+    command: ["yarn", "start"]
     environment:
       - WEBSOCKET_PUSH_PORT=8001
       - NODE_ENV=production
@@ -118,6 +124,7 @@ services:
       - 'traefik.websocketPush.frontend.auth.forward.authResponseHeaders=${INTERNAL_AUTH_HEADERS}'
       - 'traefik.backend.loadbalancer.stickiness=true'
       - 'traefik.backend.loadbalancer.stickiness.cookieName=websocket_push'
+    container_name: websocket-push
 
   redis-main:
     build:
@@ -132,6 +139,7 @@ services:
     restart: always
     labels:
       - 'traefik.enable=false'
+    container_name: redis-main
 
   postgres-main:
     image: postgres:11.3-alpine
@@ -148,6 +156,7 @@ services:
     restart: always
     labels:
       - 'traefik.enable=false'
+    container_name: postgres-main
 
   rabbitmq-broker:
     build:

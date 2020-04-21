@@ -8,13 +8,13 @@ services:
     ports: ['80:80', '443:443']
 
   passportjs-auth:
-    command: ['yarn', 'start']
+    command: ["yarn", "start"]
 
   frontend-web:
     build:
       context: ./services/frontend-web
       target: release
-    command: ['nginx', '-g', 'daemon off;']
+    command: ["nginx", "-g", "daemon off;"]
 
   backend-api:
     environment:

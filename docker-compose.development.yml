@@ -10,7 +10,7 @@ x-node-service: &nodejs
     - NODE_ENV=development
     - WEBSTACK_PROTOCOL
   stop_grace_period: 2s
-  command: ['yarn', 'dev']
+  command: ["yarn", "dev"]
 
 x-multi-service-dev-backend: &multi-service-dev-backend
   build:
@@ -30,35 +30,41 @@ services:
       - '--logLevel=INFO'
       - '--docker.watch=true'
     stop_grace_period: 2s
+    container_name: traefik-gateway
 
   frontend-web:
     <<: *nodejs
     volumes:
       - *nodejs-yarn-cache-volume
       - ./services/frontend-web/app:/frontend-web:cached
-    command: ['yarn', 'dev']
+    command: ["yarn", "dev"]
+    container_name: frontend-web
 
   backend-api:
     <<: *multi-service-dev-backend
+    container_name: backend-api
 
   background-worker:
     <<: *multi-service-dev-backend
+    container_name: background-worker
 
   passportjs-auth:
     <<: *nodejs
     # note: when working on this service, override the command to use nodemon (to watch for file changes) using:
-    #    command: [ "yarn", "dev" ]
+    command: ["yarn", "dev"]
     volumes:
       - *nodejs-yarn-cache-volume
       - ./services/passportjs-auth/app:/passportjs-auth:cached
+    container_name: passportjs-auth
 
   websocket-push:
     <<: *nodejs
     # note: uncomment command to use with nodemon in dev mode::
-    #    command: [ "yarn", "dev" ]
+    command: ["yarn", "dev"]
     volumes:
       - *nodejs-yarn-cache-volume
       - ./services/websocket-push/app:/websocket-push:cached
+    container_name: websocket-push
 
   redis-main:
     stop_grace_period: 6s
