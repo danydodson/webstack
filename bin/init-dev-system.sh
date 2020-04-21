@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HOST=${WEBSTACK_HOST:-webstack.loc}
+# HOST=${WEBSTACK_HOST:-webstack.loc}
 
 # note: postgres fails if ".gitkeep" is present in mounted-volumes/postgres-main.
 echo "Ensuring data directories exist in ./mounted-volumes"
@@ -19,7 +19,6 @@ mkdir -p ./mounted-volumes/yarn_cache
 # if ! grep -q "$HOST" "/etc/hosts"; then
 #   echo "Your /etc/hosts file needs:\n  127.0.0.1 webstack.loc\n  127.0.0.1 ws.webstack.loc"
 # fi
-
 
 echo "Building dev-mode Docker containers for all services..."
 bin/dev.sh build
