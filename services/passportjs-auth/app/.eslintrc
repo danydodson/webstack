@@ -7,8 +7,8 @@
   },
   "rules": {
     "indent": ["warn", 2],
-//    "semi": ["error", "always"],
-//    "quotes": ["error", "double"],
+    //    "semi": ["error", "always"],
+    //    "quotes": ["error", "double"],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off"
   }

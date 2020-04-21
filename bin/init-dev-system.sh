@@ -9,16 +9,16 @@ mkdir -p ./mounted-volumes/rabbitmq-broker
 mkdir -p ./mounted-volumes/redis-main
 mkdir -p ./mounted-volumes/yarn_cache
 
-if [ -f .env ]; then
-  echo ".env file already exists. Make sure it contains the environment variables listed in example.env"
-else
-   echo "Copying env.development.example to .env"
-   cp env.development.example .env
-fi
+# if [ -f .env ]; then
+#   echo ".env file already exists. Make sure it contains the environment variables listed in example.env"
+# else
+#    echo "Copying env.development.example to .env"
+#    cp env.development.example .env
+# fi
 
-if ! grep -q "$HOST" "/etc/hosts"; then
-  echo "Your /etc/hosts file needs:\n  127.0.0.1 webstack.loc\n  127.0.0.1 ws.webstack.loc"
-fi
+# if ! grep -q "$HOST" "/etc/hosts"; then
+#   echo "Your /etc/hosts file needs:\n  127.0.0.1 webstack.loc\n  127.0.0.1 ws.webstack.loc"
+# fi
 
 
 echo "Building dev-mode Docker containers for all services..."

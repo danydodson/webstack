@@ -1,6 +1,5 @@
 version: '3.7'
 
-
 x-shared-constants: &shared-constants-volume
   volumes:
     - type: bind
@@ -26,7 +25,6 @@ x-multi-service-backend: &multi-service-backend
     - RABBITMQ_DEFAULT_USER
     - RABBITMQ_DEFAULT_PASS
 
-
 services:
   traefik-gateway:
     image: traefik:v1.7.16-alpine
@@ -36,23 +34,22 @@ services:
     restart: always
     depends_on:
       - passportjs-auth
-    ports: [ "80:80" ]
-
+    ports: ['80:80']
 
   frontend-web:
     <<: *shared-constants-volume
     build:
       context: ./services/frontend-web
-    ports: [ "8080:8080" ]
+    ports: ['8080:8080']
     labels:
       # "skipAuth" and "webDefault" are segment names we define for routing rules
-      - "traefik.enable=true"
-      - "traefik.skipAuth.priority=20"
-      - "traefik.skipAuth.frontend.rule=PathPrefix:/static/,/assets/,/favicon."
-      - "traefik.webDefault.priority=10"
-      - "traefik.webDefault.frontend.rule=PathPrefix:/"
-      - "traefik.webDefault.frontend.auth.forward.address=${INTERNAL_AUTH_CHECK}"
-      - "traefik.webDefault.frontend.auth.forward.authResponseHeaders=${INTERNAL_AUTH_HEADERS}"
+      - 'traefik.enable=true'
+      - 'traefik.skipAuth.priority=20'
+      - 'traefik.skipAuth.frontend.rule=PathPrefix:/static/,/assets/,/favicon.'
+      - 'traefik.webDefault.priority=10'
+      - 'traefik.webDefault.frontend.rule=PathPrefix:/'
+      - 'traefik.webDefault.frontend.auth.forward.address=${INTERNAL_AUTH_CHECK}'
+      - 'traefik.webDefault.frontend.auth.forward.authResponseHeaders=${INTERNAL_AUTH_HEADERS}'
     restart: unless-stopped
     environment:
       - WEBSTACK_HOST
@@ -60,25 +57,22 @@ services:
       - WEBSOCKET_WEBSTACK_HOST
       - NODE_ENV=production
 
-
   backend-api:
     <<: *multi-service-backend
-    ports: [ "3000:3000" ]
+    ports: ['3000:3000']
     labels:
-      - "traefik.enable=true"
-      - "traefik.backendApi.priority=50"
-      - "traefik.backendApi.frontend.rule=PathPrefix:/api/,/guest/api/"
-      - "traefik.backendApi.frontend.auth.forward.address=${INTERNAL_AUTH_CHECK}"
-      - "traefik.backendApi.frontend.auth.forward.authResponseHeaders=${INTERNAL_AUTH_HEADERS}"
-    command: [ "bundle", "exec", "puma", "-p", "3000", "config.ru" ]
-
+      - 'traefik.enable=true'
+      - 'traefik.backendApi.priority=50'
+      - 'traefik.backendApi.frontend.rule=PathPrefix:/api/,/guest/api/'
+      - 'traefik.backendApi.frontend.auth.forward.address=${INTERNAL_AUTH_CHECK}'
+      - 'traefik.backendApi.frontend.auth.forward.authResponseHeaders=${INTERNAL_AUTH_HEADERS}'
+    command: ['bundle', 'exec', 'puma', '-p', '3000', 'config.ru']
 
   background-worker:
     <<: *multi-service-backend
     labels:
-      - "traefik.enable=false"
-    command: [ "/bin/sh", "-c", "./bin/start_background_workers.rb" ]
-
+      - 'traefik.enable=false'
+    command: ['/bin/sh', '-c', './bin/start_background_workers.rb']
 
   passportjs-auth:
     <<: *shared-constants-volume
@@ -86,7 +80,7 @@ services:
       context: ./services/passportjs-auth
     depends_on:
       - redis-main
-    ports: [ "4001:4001" ]
+    ports: ['4001:4001']
     restart: unless-stopped
     environment:
       - PASSPORTJS_AUTH_PORT=4001
@@ -99,37 +93,36 @@ services:
       - GITHUB_CLIENT_SECRET
       - INTERNAL_AUTH_HEADERS
     labels:
-      - "traefik.enable=true"
-      - "traefik.frontend.priority=90"
-      - "traefik.frontend.rule=PathPrefix:/auth/"
-    command: [ "yarn", "start" ]
+      - 'traefik.enable=true'
+      - 'traefik.frontend.priority=90'
+      - 'traefik.frontend.rule=PathPrefix:/auth/'
+    command: ['yarn', 'start']
 
   websocket-push:
     <<: *shared-constants-volume
     build:
       context: ./services/websocket-push
-    ports: [ "8001:8001" ]
+    ports: ['8001:8001']
     depends_on:
       - redis-main
-    command: [ "yarn", "start" ]
+    command: ['yarn', 'start']
     environment:
       - WEBSOCKET_PUSH_PORT=8001
       - NODE_ENV=production
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.websocketPush.priority=40"
-      - "traefik.websocketPush.frontend.rule=PathPrefix:/server_notifications/"
-      - "traefik.websocketPush.frontend.auth.forward.address=${INTERNAL_AUTH_CHECK}"
-      - "traefik.websocketPush.frontend.auth.forward.authResponseHeaders=${INTERNAL_AUTH_HEADERS}"
-      - "traefik.backend.loadbalancer.stickiness=true"
-      - "traefik.backend.loadbalancer.stickiness.cookieName=websocket_push"
-
+      - 'traefik.enable=true'
+      - 'traefik.websocketPush.priority=40'
+      - 'traefik.websocketPush.frontend.rule=PathPrefix:/server_notifications/'
+      - 'traefik.websocketPush.frontend.auth.forward.address=${INTERNAL_AUTH_CHECK}'
+      - 'traefik.websocketPush.frontend.auth.forward.authResponseHeaders=${INTERNAL_AUTH_HEADERS}'
+      - 'traefik.backend.loadbalancer.stickiness=true'
+      - 'traefik.backend.loadbalancer.stickiness.cookieName=websocket_push'
 
   redis-main:
     build:
       context: ./services/redis-main
-    ports: [ "6379:6379" ]
+    ports: ['6379:6379']
     volumes:
       - type: bind
         source: ./mounted-volumes/redis-main
@@ -138,12 +131,11 @@ services:
         consistency: delegated
     restart: always
     labels:
-      - "traefik.enable=false"
-
+      - 'traefik.enable=false'
 
   postgres-main:
     image: postgres:11.3-alpine
-    ports: [ "5432:5432"]
+    ports: ['5432:5432']
     volumes:
       - type: bind
         source: ./mounted-volumes/postgres-main
@@ -155,14 +147,13 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_MAIN_PASSWORD}
     restart: always
     labels:
-      - "traefik.enable=false"
-
+      - 'traefik.enable=false'
 
   rabbitmq-broker:
     build:
       context: ./services/rabbitmq-broker
     ports:
-      - "5672:5672"
+      - '5672:5672'
     hostname: rabbitmq-broker
     container_name: rabbitmq-broker
     volumes:
@@ -177,4 +168,4 @@ services:
       - RABBITMQ_DEFAULT_PASS
     restart: always
     labels:
-      - "traefik.enable=false"
+      - 'traefik.enable=false'

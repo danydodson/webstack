@@ -1,26 +1,26 @@
-import React from 'react';
+import React from 'react'
 import { Router } from '@reach/router'
-import { ThemeProvider } from '@material-ui/styles';
-import { CssBaseline, LinearProgress } from '@material-ui/core';
-import { buildWebSocketUrl } from './util/url-util';
-import { PrivateRoute, PublicRoute } from './auth/routes';
-import SignIn from './auth/views/SignIn';
-import GuestHome from './demo-views/GuestHome';
-import UserHome from './demo-views/UserHome';
-import PresentSlidecast from './demo-views/PresentSlidecast';
-import WatchSlidecast from './demo-views/WatchSlidecast';
-import useAuthContext, { AuthContextProvider } from './auth/auth-context';
-import { RealtimeContextProvider } from './realtime/server-dispatch-hook';
-import 'typeface-roboto'; // NOTE: Material-UI requires this font. See https://material-ui.com/components/typography/#general
-import theme from './material-ui-theme/';
-import useStyles from './App.style';
-import BackgroundPushDemo from "./demo-views/BackgroundPushDemo";
-import {EnvVars} from "./config";
+import { ThemeProvider } from '@material-ui/styles'
+import { CssBaseline, LinearProgress } from '@material-ui/core'
+import { buildWebSocketUrl } from './util/url-util'
+import { PrivateRoute, PublicRoute } from './auth/routes'
+import SignIn from './auth/views/SignIn'
+import GuestHome from './demo-views/GuestHome'
+import UserHome from './demo-views/UserHome'
+import PresentSlidecast from './demo-views/PresentSlidecast'
+import WatchSlidecast from './demo-views/WatchSlidecast'
+import useAuthContext, { AuthContextProvider } from './auth/auth-context'
+import { RealtimeContextProvider } from './realtime/server-dispatch-hook'
+import 'typeface-roboto' // NOTE: Material-UI requires this font. See https://material-ui.com/components/typography/#general
+import theme from './material-ui-theme/'
+import useStyles from './App.style'
+import BackgroundPushDemo from "./demo-views/BackgroundPushDemo"
+import { EnvVars } from "./config"
 
 
 
 function WebstackMicroDemo() {
-  const { initialPageLoading } = useAuthContext();
+  const { initialPageLoading } = useAuthContext()
 
   if (initialPageLoading) {
     return <InitialPageLoad />
@@ -29,7 +29,7 @@ function WebstackMicroDemo() {
     return <div className="WebstackMicroDemo">
       <ThemeProvider theme={theme}>
         <Router>
-          <PublicRoute path="/app/slides/:slidecastId" component={ WatchSlidecast} titlePrefix="Watch Slidecast" />
+          <PublicRoute path="/app/slides/:slidecastId" component={WatchSlidecast} titlePrefix="Watch Slidecast" />
           <PrivateRoute path="/app/slidecast/present" component={PresentSlidecast} titlePrefix="Present Slidecast" />
           <PrivateRoute path="/app/dashboard" component={UserHome} titlePrefix="Dashboard" />
           <PrivateRoute path="/app/background_push" component={BackgroundPushDemo} titlePrefix="BackgroundPush Demo" />
@@ -44,7 +44,7 @@ function WebstackMicroDemo() {
 
 
 function InitialPageLoad() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return <div className={classes.pageLoadingRoot}>
     <LinearProgress />
@@ -53,15 +53,15 @@ function InitialPageLoad() {
 
 
 function App() {
-  const webSocketUrl = buildWebSocketUrl({ host: EnvVars.websocketHost, path: '/server_notifications/' });
+  const webSocketUrl = buildWebSocketUrl({ host: EnvVars.websocketHost, path: '/server_notifications/' })
 
   return <AuthContextProvider>
     <RealtimeContextProvider webSocketUrl={webSocketUrl}>
       <CssBaseline />
       <WebstackMicroDemo />
     </RealtimeContextProvider>
-  </AuthContextProvider>;
+  </AuthContextProvider>
 }
 
 
-export default App;
+export default App

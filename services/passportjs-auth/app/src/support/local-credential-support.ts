@@ -1,21 +1,21 @@
-import bcrypt from "bcryptjs";
-import cryptoRandomString from "crypto-random-string";
-import {AuthUser, Email, LocalAuthData} from "../passportjs-auth-app";
-import {BcryptHashSalt} from "../config";
+import bcrypt from "bcryptjs"
+import cryptoRandomString from "crypto-random-string"
+import { AuthUser, Email, LocalAuthData } from "../passportjs-auth-app"
+import { BcryptHashSalt } from "../config"
 
 
 export interface NewLocalAuthUserProps {
-  email: Email;
-  password: string;
-  displayName: string;
-  confirmed: boolean;
+  email: Email
+  password: string
+  displayName: string
+  confirmed: boolean
 }
 
-export async function buildNewLocalAuthUser({email, password, displayName, confirmed}: NewLocalAuthUserProps): Promise<AuthUser> {
-  const authUserId = `local:${cryptoRandomString({length: 16, type: "hex"})}`;
-  const pwdHash = await _hashedPassword(password);
-  const localAuth = {pwdHash} as LocalAuthData;
-  return <AuthUser>{authUserId, email, displayName, confirmed, localAuth};
+export async function buildNewLocalAuthUser({ email, password, displayName, confirmed }: NewLocalAuthUserProps): Promise<AuthUser> {
+  const authUserId = `local:${cryptoRandomString({ length: 16, type: "hex" })}`
+  const pwdHash = await _hashedPassword(password)
+  const localAuth = { pwdHash } as LocalAuthData
+  return <AuthUser>{ authUserId, email, displayName, confirmed, localAuth }
 }
 
 
@@ -29,44 +29,44 @@ export async function buildNewLocalAuthUser({email, password, displayName, confi
  * @param displayName
  */
 export interface CreateConfirmedLocalAuthUserProps extends Partial<NewLocalAuthUserProps> {
-  saveAuthUser: Function;
-  findAuthUserByEmail: Function;
+  saveAuthUser: Function
+  findAuthUserByEmail: Function
 }
 
 // note: this is used in bin/create-dev-user.js
 export async function createConfirmedLocalAuthUser(opts: CreateConfirmedLocalAuthUserProps): Promise<AuthUser> {
-  const {email, password, displayName, findAuthUserByEmail, saveAuthUser} = opts;
+  const { email, password, displayName, findAuthUserByEmail, saveAuthUser } = opts
   if (!email || !password) {
-    throw new Error("Expecting email and password");
+    throw new Error("Expecting email and password")
   }
   let authUser = await buildNewLocalAuthUser({
     email, displayName, password,
     confirmed: true
-  });
-  const existing = await findAuthUserByEmail(email);
+  })
+  const existing = await findAuthUserByEmail(email)
   if (existing) {
-    console.log(`Found existing account for email "${email}", updating password and display name.`);
-    existing.localAuth = authUser.localAuth;
-    existing.displayName = displayName;
-    existing.confirmed = true;
-    authUser = existing;
+    console.log(`Found existing account for email "${email}", updating password and display name.`)
+    existing.localAuth = authUser.localAuth
+    existing.displayName = displayName
+    existing.confirmed = true
+    authUser = existing
 
   }
-  await saveAuthUser(authUser);
-  return authUser;
+  await saveAuthUser(authUser)
+  return authUser
 }
 
 function _hashedPassword(cleartext: string): Promise<any> {
   return new Promise((resolve: Function, reject: Function) => {
     if (!cleartext) {
-      return reject("Expecting a password to hash");
+      return reject("Expecting a password to hash")
     }
     bcrypt.hash(cleartext, BcryptHashSalt, function (err: any, hash: string) {
       if (err) {
-        reject(err);
+        reject(err)
       } else {
-        resolve(hash);
+        resolve(hash)
       }
-    });
-  });
+    })
+  })
 }

@@ -1,15 +1,15 @@
 
 
 function parseJson(msg) {
-  let data;
+  let data
   try {
-    data = JSON.parse(msg);
+    data = JSON.parse(msg)
   } catch (err) {
-    console.warn(`Could not parse json message`, msg);
+    console.warn(`Could not parse json message`, msg)
   }
-  return data;
+  return data
 }
 
 module.exports = {
   parseJson
-};
+}

@@ -1,15 +1,15 @@
-const setupWsConnections = require('./ws-connections.js');
-const setupInboundWsMessages = require('./messaging-api.js');
-const { socketAddedForUser } = require('./membership-tracking.js');
-const { setupRedisSubscriptionForBroadcast } = require('./broadcast.js');
-const setupRedisSubscriptionForUserLogin = require('./login-listener.js');
+const setupWsConnections = require('./ws-connections.js')
+const setupInboundWsMessages = require('./messaging-api.js')
+const { socketAddedForUser } = require('./membership-tracking.js')
+const { setupRedisSubscriptionForBroadcast } = require('./broadcast.js')
+const setupRedisSubscriptionForUserLogin = require('./login-listener.js')
 
 
-const WebsocketPushPort = process.env.WEBSOCKET_PUSH_PORT;
+const WebsocketPushPort = process.env.WEBSOCKET_PUSH_PORT
 
 const RedisConfig = {
   host: 'redis-main',
-};
+}
 
 /**
  * Should incoming websocket be permitted to connect?
@@ -18,8 +18,8 @@ const RedisConfig = {
  * @returns {Promise<boolean>}
  */
 const permitUserConnection = (wsUserId, request) => {
-  return Promise.resolve(true); // permit guest connections
-};
+  return Promise.resolve(true) // permit guest connections
+}
 
 
 /**
@@ -30,8 +30,8 @@ const permitUserConnection = (wsUserId, request) => {
  * @returns {Promise<boolean>}
  */
 const permitJoiningRoom = (wsUserId, roomId, { requestHeaders }) => {
-  return Promise.resolve(true);  // by default, permit anyone who knows the room id to receive those messages
-};
+  return Promise.resolve(true)  // by default, permit anyone who knows the room id to receive those messages
+}
 
 
 /**
@@ -49,8 +49,8 @@ const permitJoiningRoom = (wsUserId, roomId, { requestHeaders }) => {
  * @returns {string} wsUserId
  */
 const extractWsUserIdFromRequest = (req) => {
-  return req.headers[ 'x-auth-user' ] || req.headers[ 'x-auth-guest' ];
-};
+  return req.headers['x-auth-user'] || req.headers['x-auth-guest']
+}
 
 
 
@@ -60,10 +60,10 @@ function setupWsBehavior({ httpServer, wsServer, redisClient }) {
     extractWsUserIdFromRequest,
     permitUserConnection,
     socketAddedForUser, httpServer, wsServer
-  });
-  setupRedisSubscriptionForBroadcast({ redisClient });
-  setupRedisSubscriptionForUserLogin({ redisClient });
-  setupInboundWsMessages({ wsServer, permitJoiningRoom });
+  })
+  setupRedisSubscriptionForBroadcast({ redisClient })
+  setupRedisSubscriptionForUserLogin({ redisClient })
+  setupInboundWsMessages({ wsServer, permitJoiningRoom })
 }
 
 
@@ -71,4 +71,4 @@ module.exports = {
   WebsocketPushPort,
   RedisConfig,
   setupWsBehavior,
-};
+}

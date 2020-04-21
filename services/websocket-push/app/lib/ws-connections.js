@@ -1,5 +1,5 @@
 
-const DefaultHeartbeatDuration = 22000;
+const DefaultHeartbeatDuration = 22000
 
 
 /**
@@ -18,51 +18,51 @@ const DefaultHeartbeatDuration = 22000;
  */
 function setupWsServer({ extractWsUserIdFromRequest, permitUserConnection, socketAddedForUser, heartbeatDuration, httpServer, wsServer }) {
   httpServer.on('upgrade', function upgrade(request, notTheSocket, head) { // it seems "socket" in the docs ("notTheSocket" here) and "ws" do not reference the same object and "socket" is something different
-    const wsUserId = extractWsUserIdFromRequest(request);
+    const wsUserId = extractWsUserIdFromRequest(request)
     if (!permitUserConnection(wsUserId, request)) {
-      notTheSocket.terminate(); // or use destroy? example in readme and API docs inconsistent
+      notTheSocket.terminate() // or use destroy? example in readme and API docs inconsistent
     } else {
       wsServer.handleUpgrade(request, notTheSocket, head, function done(ws) {
-        ws.wsUserId = wsUserId;
-        ws.requestHeaders = request.headers;
-        ws.isAlive = true;
-        ws.tabWindowId = insecureToken();
-        wsServer.emit('connection', ws, request);  // todo: ensure not triggered twice
-        socketAddedForUser(ws);
+        ws.wsUserId = wsUserId
+        ws.requestHeaders = request.headers
+        ws.isAlive = true
+        ws.tabWindowId = insecureToken()
+        wsServer.emit('connection', ws, request)  // todo: ensure not triggered twice
+        socketAddedForUser(ws)
 
-        ws.on('pong', _heartbeat);
-      });
+        ws.on('pong', _heartbeat)
+      })
     }
-  });
+  })
 
-  _startHeartbeat({ wsServer, heartbeatDuration });
+  _startHeartbeat({ wsServer, heartbeatDuration })
 }
 
 
-let interval;
+let interval
 function _startHeartbeat({ wsServer, heartbeatDuration }) {
   interval = setInterval(function ping() {
     wsServer.clients.forEach(function each(ws) {
       if (ws.isAlive === false) {
-        ws.emit('close');
-        ws.terminate();
+        ws.emit('close')
+        ws.terminate()
       } else {
-        ws.isAlive = false;
-        ws.ping(noop);
+        ws.isAlive = false
+        ws.ping(noop)
       }
 
-    });
-  }, heartbeatDuration || DefaultHeartbeatDuration);
+    })
+  }, heartbeatDuration || DefaultHeartbeatDuration)
 }
 
-function noop() {}
+function noop() { }
 
 function _heartbeat() {
-  this.isAlive = true;
+  this.isAlive = true
 }
 
 function insecureToken() {
-  return Math.floor(1e16 * Math.random()).toString(36).toLowerCase();
+  return Math.floor(1e16 * Math.random()).toString(36).toLowerCase()
 }
 
-module.exports = setupWsServer;
+module.exports = setupWsServer

@@ -1,4 +1,4 @@
-import {PathPrefixOrRegex} from "./passportjs-auth-app";
+import { PathPrefixOrRegex } from "./passportjs-auth-app"
 
 
 /**
@@ -7,8 +7,8 @@ import {PathPrefixOrRegex} from "./passportjs-auth-app";
  * It also contains most constants that might change from app to app.
  */
 
-export const AuthSessionSecret = process.env.AUTH_SESSION_SECRET;
-export const UseDebugErrorHandler = !!process.env.DEBUG_ERROR_HANDLER;
+export const AuthSessionSecret = process.env.AUTH_SESSION_SECRET
+export const UseDebugErrorHandler = !!process.env.DEBUG_ERROR_HANDLER
 
 
 /**
@@ -30,7 +30,7 @@ export const OpenIdProvider = {
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   },
-};
+}
 
 
 /**
@@ -57,16 +57,16 @@ export const GuestPermittedResource = [
   '/guest',
   '/welcome',
   '/server_notifications', // this allows guest websocket connections. Remove if you want to block non-authenticated users from connecting
-] as PathPrefixOrRegex[];
+] as PathPrefixOrRegex[]
 
 
 /**
  * When in dev mode, grant guest access to these additional resources.
  * Initially added to support the frontend-web's create-react-app in watch/server mode--it uses them for hot-reload.
  */
-const frontendDevSwitch = process.env.FRONTEND_DEV_RESOURCES;
+const frontendDevSwitch = process.env.FRONTEND_DEV_RESOURCES
 export const IsFrontEndDevMode = frontendDevSwitch === 'guest' || frontendDevSwitch === '1' ||
-  (typeof frontendDevSwitch === 'undefined' && process.env.NODE_ENV === 'development');
+  (typeof frontendDevSwitch === 'undefined' && process.env.NODE_ENV === 'development')
 export const DevMode_GuestPermittedResource = <PathPrefixOrRegex[]>[
   '/sockjs-node',
   /hot-update\.(js|js\.map|json)$/,
@@ -78,7 +78,7 @@ export const DevMode_GuestPermittedResource = <PathPrefixOrRegex[]>[
   '/socket.io/',
   '/_next', "/.next", // not sure about these
   // other common ones?
-];
+]
 
 
 /**
@@ -99,7 +99,7 @@ export const SessionConfig = {
   },
   saveUninitialized: true,
   resave: false,
-};
+}
 
 
 /**
@@ -112,20 +112,20 @@ export const JwtConfig = {
   secret: process.env.AUTH_JWT_SECRET, // secretOrPublicKey. Or an async function.
   options: { // see https://www.npmjs.com/package/jsonwebtoken
   },
-};
+}
 
 
 export const RedisConfig = {
   host: 'redis-main'
-};
+}
 
 
 // At present, OpenId Connect is used in production, with password-based login enabled in dev mode for working offline and
 // without third-party API keys. (See README)
-export const EnableLocalPasswordLoginSystem = process.env.NODE_ENV === "development";
+export const EnableLocalPasswordLoginSystem = process.env.NODE_ENV === "development"
 
 
 // using library default; higher is better/slower. Consider installing argon2 to better defend against offline attacks (should an attacker get a copy of your database and all of the hashed passwords)
-export const BcryptHashSalt = 10;
+export const BcryptHashSalt = 10
 
 

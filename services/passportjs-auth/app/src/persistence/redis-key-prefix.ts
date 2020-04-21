@@ -1,8 +1,8 @@
 
-const RedisKeyPrefix = "auth";
+const RedisKeyPrefix = "auth"
 
-export const RedisSessionStorePrefix = `${RedisKeyPrefix}:sess`;
+export const RedisSessionStorePrefix = `${RedisKeyPrefix}:sess`
 
-export const RedisUserDataByAuthUserIdPrefix = `${RedisKeyPrefix}:auid`;  // example key: auth:auid:github:ferbs
+export const RedisUserDataByAuthUserIdPrefix = `${RedisKeyPrefix}:auid`  // example key: auth:auid:github:ferbs
 
-export const RedisAuthUserIdByEmailPrefix = `${RedisKeyPrefix}:email`;
+export const RedisAuthUserIdByEmailPrefix = `${RedisKeyPrefix}:email`
