@@ -16,19 +16,16 @@ ENV GEM_PATH /backend-api/gem_bundle
 ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
 RUN mkdir -p $BUNDLE_PATH && gem install bundler
 
-
 FROM base AS development
 USER appuser
 WORKDIR /backend-api
 EXPOSE 3000
-
 
 FROM base AS build
 USER appuser
 WORKDIR /backend-api
 COPY ./app/Gemfile .
 RUN bundle install --without development test
-
 
 FROM build AS release
 USER appuser

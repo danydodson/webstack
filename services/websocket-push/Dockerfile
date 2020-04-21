@@ -9,6 +9,7 @@ RUN mkdir -p /passportjs-auth /usr/local/yarn_cache /usr/local/shared-constants 
   addgroup -S appgroup && \
   adduser -D -s /bin/bash -h /websocket-push nodeuser -G appgroup && \
   chown -R nodeuser:appgroup /websocket-push
+  
 ENV YARN_CACHE_FOLDER=/usr/local/yarn_cache
 
 

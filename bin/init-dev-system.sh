@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# HOST=${WEBSTACK_HOST:-webstack.loc}
+HOST=${WEBSTACK_HOST:-webstack.loc}
 
 # note: postgres fails if ".gitkeep" is present in mounted-volumes/postgres-main.
 echo "Ensuring data directories exist in ./mounted-volumes"
@@ -20,15 +20,21 @@ mkdir -p ./mounted-volumes/yarn_cache
 #   echo "Your /etc/hosts file needs:\n  127.0.0.1 webstack.loc\n  127.0.0.1 ws.webstack.loc"
 # fi
 
+# sh -c "sudo chown -R nodeuser mounted-volumes/yarn_cache"
+# sh -c "sudo chmod -R 777 /mounted-volumes/yarn_cache"
+
 echo "Building dev-mode Docker containers for all services..."
 bin/dev.sh build
 
 echo "Installing dev-mode npm packages for passportjs-auth"
 bin/dev.sh run --no-deps passportjs-auth yarn install
 bin/dev.sh run --no-deps passportjs-auth yarn build:ts
+
 echo "Installing dev-mode npm packages for websocket-push"
 bin/dev.sh run --no-deps websocket-push yarn install
+
 echo "Installing dev-mode npm packages for frontend-web"
 bin/dev.sh run --no-deps frontend-web yarn install
+
 echo "Installing dev-mode ruby gems for backend-api"
 bin/dev.sh run backend-api bundle install

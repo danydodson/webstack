@@ -16,6 +16,7 @@ RUN mkdir -p /passportjs-auth /usr/local/yarn_cache /usr/local/shared-constants 
   addgroup -S appgroup && \
   adduser -D -s /bin/bash -h /passportjs-auth nodeuser -G appgroup && \
   chown -R nodeuser:appgroup /passportjs-auth
+
 ENV YARN_CACHE_FOLDER=/usr/local/yarn_cache
 
 FROM base AS development
@@ -30,7 +31,3 @@ COPY ./app /passportjs-auth
 RUN yarn install --production
 EXPOSE 4001
 CMD [ "yarn", "start" ]
-
-
-
-
