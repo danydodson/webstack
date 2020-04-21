@@ -12,6 +12,6 @@
  */
 export default function asStateAssigment(setState) {
   return (updates) => {
-    setState(prev => ({...prev, ...(typeof updates === 'function' ? updates(prev) : updates) }));
-  };
+    setState(prev => ({ ...prev, ...(typeof updates === 'function' ? updates(prev) : updates) }))
+  }
 }

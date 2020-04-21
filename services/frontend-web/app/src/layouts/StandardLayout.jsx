@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import clsx from 'clsx'
-import { Container } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
-import TopBar from './TopBar';
+import { Container } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
+import TopBar from './TopBar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,20 +21,20 @@ const useStyles = makeStyles((theme) => ({
   noBackground: {
     background: 'unset',
   },
-}));
+}))
 
 
 export default function StandardLayout({ children, skipSignInOut, skipBackground, ...props }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div className={classes.root}>
-      <TopBar skipSignInOut={skipSignInOut}/>
+      <TopBar skipSignInOut={skipSignInOut} />
       <main className={clsx(classes.content, skipBackground ? classes.noBackground : classes.mainBackground)}>
         <Container>
           {children}
         </Container>
       </main>
     </div>
-  );
+  )
 };

@@ -1,16 +1,16 @@
-import React from 'react';
-import useStyles from "./LatestResult.style";
+import React from 'react'
+import useStyles from "./LatestResult.style"
 
 
 export default function LatestResult({ sortedList, hasWebSocketConnection }) {
-  const classes = useStyles();
+  const classes = useStyles()
   if (!hasWebSocketConnection) {
     return <p>Disconnected from server &mdash; hiding possibly old/stale results</p>;;
   }
 
   const content = Array.isArray(sortedList) && sortedList.length ?
-    <pre>{ sortedList.join('\n') }</pre> :
-    <h4 className={classes.noResultsYet}>Items have not yet been sorted.</h4>;
+    <pre>{sortedList.join('\n')}</pre> :
+    <h4 className={classes.noResultsYet}>Items have not yet been sorted.</h4>
 
   return <div className={classes.resultsArea}>
     <h4>Shared Results</h4>
@@ -19,6 +19,6 @@ export default function LatestResult({ sortedList, hasWebSocketConnection }) {
       is fetched on page load and refreshed by WebSocket message and on each server reconnect.
     </p>
 
-    { content }
+    {content}
   </div>
 }

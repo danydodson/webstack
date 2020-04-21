@@ -1,5 +1,5 @@
 
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   statusMessage: {
@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
       lineHeight: 'unset',
     },
   }
-}));
+}))
 
 
-export default useStyles;
+export default useStyles
 

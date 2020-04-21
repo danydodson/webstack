@@ -1,29 +1,29 @@
-import React from 'react';
-import useForm from 'react-hook-form';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
-import {splitMarkdownIntoSlides} from "../demo-support/markdown-support";
-import getDemoMarkdownContent from '../demo-support/demo-markdown-content';
-import {FormTextarea, FormTextField} from "../components/form-fields";
-import useStyles from './EditSlideCast.style';
+import React from 'react'
+import useForm from 'react-hook-form'
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
+import { splitMarkdownIntoSlides } from "../demo-support/markdown-support"
+import getDemoMarkdownContent from '../demo-support/demo-markdown-content'
+import { FormTextarea, FormTextField } from "../components/form-fields"
+import useStyles from './EditSlideCast.style'
 
 
 export default function EditSlideCast({ savePreso, closeEditor, slides, title, canCancel }) {
 
-  const { register, errors, setError, setValue, handleSubmit } = useForm();
-  const sharedFormFieldProps = { register, errors, fullWidth: true };
+  const { register, errors, setError, setValue, handleSubmit } = useForm()
+  const sharedFormFieldProps = { register, errors, fullWidth: true }
 
   const onSubmit = (formData) => {
-    const { title, presoMarkdown } = formData;
-    const slides = splitMarkdownIntoSlides(presoMarkdown);
+    const { title, presoMarkdown } = formData
+    const slides = splitMarkdownIntoSlides(presoMarkdown)
     savePreso({ title, slides })
       .then(() => closeEditor())
       .catch(err => {
-        setError('slides', err.errorMessage || err.errorCode); // todo: better validation errors
-      });
-  };
+        setError('slides', err.errorMessage || err.errorCode) // todo: better validation errors
+      })
+  }
 
-  const classes = useStyles();
-  
+  const classes = useStyles()
+
   return <Dialog
     open={true}
     onClose={closeEditor}
@@ -44,34 +44,34 @@ export default function EditSlideCast({ savePreso, closeEditor, slides, title, c
           defaultValue={title || 'My Markdown SlideCast'}
           required
           maxLength={64}
-          { ...sharedFormFieldProps }
+          {...sharedFormFieldProps}
         />
         <FormTextarea
           name="presoMarkdown"
           id="preso-markdown"
           aria-label="preso-markdown"
-          defaultValue={ (slides || []).join('\n\n') }
+          defaultValue={(slides || []).join('\n\n')}
           className={classes.editMarkdown}
           label="Markdown for entire SlideCast"
           variant="outlined"
           rows={8}
-          helperText={ `Paste in your markdown content. It will be split into slides using major headers as break points. (eg, "# Main Title" and "## Another Section")`}
-          { ...sharedFormFieldProps }
+          helperText={`Paste in your markdown content. It will be split into slides using major headers as break points. (eg, "# Main Title" and "## Another Section")`}
+          {...sharedFormFieldProps}
         />
       </DialogContent>
       <DialogActions>
         <Button
           onClick={(evt) => {
-            evt.stopPropagation();
-            setValue('presoMarkdown', getDemoMarkdownContent());
-            evt.target.blur();
+            evt.stopPropagation()
+            setValue('presoMarkdown', getDemoMarkdownContent())
+            evt.target.blur()
           }}
           color="secondary"
         >Fill with demo markdown content</Button>
-        
+
         {canCancel &&
-        <Button onClick={closeEditor} color="primary">
-          Cancel
+          <Button onClick={closeEditor} color="primary">
+            Cancel
         </Button>
         }
         <Button
@@ -82,5 +82,5 @@ export default function EditSlideCast({ savePreso, closeEditor, slides, title, c
         </Button>
       </DialogActions>
     </form>
-  </Dialog>;
+  </Dialog>
 }

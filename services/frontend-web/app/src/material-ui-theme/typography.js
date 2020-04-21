@@ -1,4 +1,4 @@
-import palette from './palette';
+import palette from './palette'
 
 export default {
   h1: {
@@ -86,4 +86,4 @@ export default {
     lineHeight: '13px',
     textTransform: 'uppercase'
   }
-};
+}

@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -65,6 +65,6 @@ const useStyles = makeStyles(theme => ({
   devModeLocalSigninTips: {
     marginTop: theme.spacing(3)
   }
-}));
+}))
 
-export default useStyles;
+export default useStyles

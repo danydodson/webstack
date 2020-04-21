@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   authUserInfo: {
@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     top: '5px',
   },
-}));
+}))
 
 
-export default useStyles;
+export default useStyles

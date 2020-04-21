@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   backgroundPushDemo: {
@@ -14,8 +14,8 @@ const useStyles = makeStyles(theme => ({
     width: '80vw',
     margin: '2rem auto',
   },
-}));
+}))
 
 
-export default useStyles;
+export default useStyles
 

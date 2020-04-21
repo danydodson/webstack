@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 
 const useStyles = makeStyles(theme => ({
@@ -19,6 +19,6 @@ const useStyles = makeStyles(theme => ({
 
     listStyleType: 'none',
   },
-}));
+}))
 
-export default useStyles;
+export default useStyles

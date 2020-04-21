@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   fullScreenSlideContainer: {
@@ -25,6 +25,6 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   }
-}));
+}))
 
-export default useStyles;
+export default useStyles

@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   hero: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   subhead: {
   }
-}));
+}))
 
 
-export default useStyles;
+export default useStyles

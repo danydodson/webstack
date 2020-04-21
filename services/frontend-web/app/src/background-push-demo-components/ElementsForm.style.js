@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   aiForm: {
@@ -9,8 +9,8 @@ const useStyles = makeStyles(theme => ({
     margin: '1rem 2rem',
     padding: '.5rem',
   },
-}));
+}))
 
 
-export default useStyles;
+export default useStyles
 

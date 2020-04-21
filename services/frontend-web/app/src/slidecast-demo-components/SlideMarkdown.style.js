@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
       border: '1px solid #dfe2e5',
     },
   },
-  
+
   fullSize: {
     // width: '94vw',
     minHeight: '70vh',
@@ -44,6 +44,6 @@ const useStyles = makeStyles(theme => ({
     margin: '10vh 0',
     width: '100%',
   }
-}));
+}))
 
-export default useStyles;
+export default useStyles

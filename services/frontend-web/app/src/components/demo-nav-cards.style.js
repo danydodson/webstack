@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   navCardList: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: '1.25rem',
     lineHeight: '1.75rem',
   }
-}));
+}))
 
 
-export default useStyles;
+export default useStyles

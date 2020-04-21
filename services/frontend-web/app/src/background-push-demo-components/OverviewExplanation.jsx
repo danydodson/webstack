@@ -1,9 +1,9 @@
-import React from 'react';
-import useStyles from './OverviewExplanation.style';
+import React from 'react'
+import useStyles from './OverviewExplanation.style'
 
 
 export default function OverviewExplanation() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return <div className={classes.overviewExplanation}>
     <p>
@@ -45,11 +45,11 @@ export default function OverviewExplanation() {
           </li>
           <li>
             Should the client lose its WebSocket connection, it shows a status message. The state is refreshed from the server
-            each time the connection is re-established. 
+            each time the connection is re-established.
           </li>
         </ul>
       </li>
     </ol>
-  </div>;
+  </div>
 }
 

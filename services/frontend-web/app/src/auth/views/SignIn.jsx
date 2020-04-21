@@ -1,34 +1,34 @@
-import React from 'react';
+import React from 'react'
 import { navigate } from '@reach/router'
-import useForm from 'react-hook-form';
-import { get as get_ } from 'lodash';
-import { Grid, Button, FormControl, Typography, Divider, InputLabel } from '@material-ui/core';
+import useForm from 'react-hook-form'
+import { get as get_ } from 'lodash'
+import { Grid, Button, FormControl, Typography, Divider, InputLabel } from '@material-ui/core'
 import * as AuthApi from '../auth-api'
-import StandardLayout from '../../layouts/StandardLayout';
-import useAuthContext from '../auth-context';
-import useStyles from './SignIn.style';
-import FacebookIcon from '../../assets/icons/FacebookIcon';
-import GoogleIcon from '../../assets/icons/GoogleIcon';
-import GithubIcon from '../../assets/icons/GithubIcon';
-import {FormTextField} from "../../components/form-fields";
+import StandardLayout from '../../layouts/StandardLayout'
+import useAuthContext from '../auth-context'
+import useStyles from './SignIn.style'
+import FacebookIcon from '../../assets/icons/FacebookIcon'
+import GoogleIcon from '../../assets/icons/GoogleIcon'
+import GithubIcon from '../../assets/icons/GithubIcon'
+import { FormTextField } from "../../components/form-fields"
 import { OpenIdConnectHrefByProvider, EnvVars } from '../../config'
 
 
 export default function SignInView() {
-  const classes = useStyles();
-  const { isLoggedIn, setAuthUserState, setConnectionErrorState } = useAuthContext();
+  const classes = useStyles()
+  const { isLoggedIn, setAuthUserState, setConnectionErrorState } = useAuthContext()
   React.useEffect(() => {
     if (isLoggedIn) {
-      navigate('/app/dashboard');
+      navigate('/app/dashboard')
     }
-  }, [ isLoggedIn ]);
-  const { hasLocalPasswordLogin, isDevMode } = EnvVars;
-  const hasOpenIdLogin = !!Object.keys(OpenIdConnectHrefByProvider).length;
-  const passwordProps = { classes, setAuthUserState, setConnectionErrorState, hasOpenIdLogin };
+  }, [isLoggedIn])
+  const { hasLocalPasswordLogin, isDevMode } = EnvVars
+  const hasOpenIdLogin = !!Object.keys(OpenIdConnectHrefByProvider).length
+  const passwordProps = { classes, setAuthUserState, setConnectionErrorState, hasOpenIdLogin }
   const openIdProps = {
     OpenIdConnectHrefByProvider,
     classes,
-  };
+  }
 
   return <StandardLayout skipSignInOut={true}>
     <div className={classes.root}>
@@ -51,15 +51,15 @@ export default function SignInView() {
                 Sign in
               </Typography>
 
-              { hasOpenIdLogin && <>
-                <OpenIdLogin {...openIdProps } />
+              {hasOpenIdLogin && <>
+                <OpenIdLogin {...openIdProps} />
                 <Divider
                   className={classes.divider}
                   variant="middle"
                 />
               </>}
-              { hasLocalPasswordLogin &&
-              <PasswordSignIn {...passwordProps } isDevMode={isDevMode} />
+              {hasLocalPasswordLogin &&
+                <PasswordSignIn {...passwordProps} isDevMode={isDevMode} />
               }
             </Grid>
           </Grid>
@@ -67,78 +67,78 @@ export default function SignInView() {
       </div>
     </div>
 
-  </StandardLayout>;
+  </StandardLayout>
 }
 
 
-function OpenIdLogin({ classes, OpenIdConnectHrefByProvider  }) {
-  const { github, facebook, google } = OpenIdConnectHrefByProvider || {};
+function OpenIdLogin({ classes, OpenIdConnectHrefByProvider }) {
+  const { github, facebook, google } = OpenIdConnectHrefByProvider || {}
   const renderOpenIdButton = (href, content) => {
     if (!href || !content) {
-      return null;
+      return null
     }
     return <FormControl fullWidth>
       <Button
-        href={ href }
+        href={href}
         size="large"
         variant="outlined"
         fullWidth
       >
-        { content }
+        {content}
       </Button>
     </FormControl>
-  };
+  }
 
   return <div
     className={classes.socialButtons}
   >
-    { github && renderOpenIdButton(github, <><GithubIcon className={classes.socialIcon} /> Sign in with GitHub</>) }
-    { google && renderOpenIdButton(google, <><GoogleIcon className={classes.socialIcon} /> Sign in with Google</>) }
-    { facebook && renderOpenIdButton(facebook, <><FacebookIcon className={classes.socialIcon} /> Sign in with Facebook</>) }
-  </div>;
+    {github && renderOpenIdButton(github, <><GithubIcon className={classes.socialIcon} /> Sign in with GitHub</>)}
+    {google && renderOpenIdButton(google, <><GoogleIcon className={classes.socialIcon} /> Sign in with Google</>)}
+    {facebook && renderOpenIdButton(facebook, <><FacebookIcon className={classes.socialIcon} /> Sign in with Facebook</>)}
+  </div>
 }
 
 
 function PasswordSignIn({ classes, setAuthUserState, setConnectionErrorState, isDevMode }) {
-  const { register, handleSubmit, clearError, errors, setError } = useForm();
+  const { register, handleSubmit, clearError, errors, setError } = useForm()
 
 
   const onSubmit = data => {
-    const { email, password } = data;
-    AuthApi.signIn(email, password).then((result={}) => {
-      clearError();
+    const { email, password } = data
+    AuthApi.signIn(email, password).then((result = {}) => {
+      clearError()
       if (result.authUserId) {
-        setAuthUserState(result);
-        navigate('/app/dashboard');
+        setAuthUserState(result)
+        navigate('/app/dashboard')
       } else {
-        const errorMessage = get_(result, 'validationErrors[0].message') || 'Unknown Error'; // could also check errorCode (eg, "InvalidCredentials"). todo: move all errorCodes into shared-constants
-        setError('form', 'invalid', errorMessage);
+        const errorMessage = get_(result, 'validationErrors[0].message') || 'Unknown Error' // could also check errorCode (eg, "InvalidCredentials"). todo: move all errorCodes into shared-constants
+        setError('form', 'invalid', errorMessage)
       }
     }).catch(err => {
-      console.warn('Connection error', err);
-      setConnectionErrorState(true);
-    });
-  };
+      console.warn('Connection error', err)
+      setConnectionErrorState(true)
+    })
+  }
 
   const inputFields = {
     register, errors,
     fullWidth: true,
-  };
+  }
 
-  const devModeTip = isDevMode && '# You can create a dev-mode login account with:\nbin/dev.sh run passportjs-auth bin/create-dev-user.js \\\n  dev@email.loc secret! Some Name';
+  const devModeTip = isDevMode && '# You can create a dev-mode login account with:\nbin/dev.sh run passportjs-auth bin/create-dev-user.js \\\n  dev@email.loc secret! Some Name'
 
   return <form
     className={classes.form}
     onSubmit={handleSubmit(onSubmit)}
   >
-    { errors && errors.form && <InputLabel error={true} className={classes.formLevelError}>{errors.form.message}</InputLabel> }
+    {errors && errors.form && <InputLabel error={true} className={classes.formLevelError}>{errors.form.message}</InputLabel>}
 
     <FormTextField
       name="email"
       formOpts={{ required: 'Required field' }}
       label="Email address"
       variant="outlined"
-      { ...inputFields }
+      {...inputFields}
     />
     <FormTextField
       name="password"
@@ -147,7 +147,7 @@ function PasswordSignIn({ classes, setAuthUserState, setConnectionErrorState, is
       register={register}
       label="Password"
       variant="outlined"
-      { ...inputFields }
+      {...inputFields}
     />
 
     <Button
@@ -162,12 +162,12 @@ function PasswordSignIn({ classes, setAuthUserState, setConnectionErrorState, is
       Sign in
     </Button>
 
-    { devModeTip &&
-    <div className={classes.devModeLocalSigninTips}>
-        <pre>{ devModeTip }</pre>
-    </div>
+    {devModeTip &&
+      <div className={classes.devModeLocalSigninTips}>
+        <pre>{devModeTip}</pre>
+      </div>
     }
-  </form>;
+  </form>
 }
 
 

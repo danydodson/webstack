@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 
 const useStyles = makeStyles(theme => ({
@@ -11,6 +11,6 @@ const useStyles = makeStyles(theme => ({
     margin: '30vh auto',
     width: '20vw',
   },
-}));
+}))
 
-export default useStyles;
+export default useStyles
